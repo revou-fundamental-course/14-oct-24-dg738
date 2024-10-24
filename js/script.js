@@ -1,9 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const name = prompt("Please enter your name:");
-    document.getElementById('welcome-message').textContent = `Hi ${name}!`;
-});
-
-function validateForm() {
+function sendContactForm() {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
@@ -14,6 +9,28 @@ function validateForm() {
         return false;
     }
 
-    alert(`Thank you, ${name}! Your message has been received.`);
+    const formData = {
+        name: name,
+        email: email,
+        phone: phone,
+        message: message
+    };
+
+    fetch('https://your-api-endpoint.com/contact', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(`Thank you, ${name}! Your message has been sent.`);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error sending your message.');
+    });
+
     return true;
 }
